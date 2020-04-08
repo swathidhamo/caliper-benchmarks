@@ -14,39 +14,42 @@
 
 'use strict';
 
-module.exports.info = 'Querying a car.';
+module.exports.info = 'Updating a reading.';
 
 const helper = require('./helper');
 
 let txIndex = 0;
-let limitIndex, bc, contx;
+let values = ['12.3','123','4.5','21','0.44'];
+let bc, contx, clientArgs;
 
 module.exports.init = async function(blockchain, context, args) {
     bc = blockchain;
     contx = context;
-    limitIndex = args.assets;
+    clientArgs = args;
 
-    await helper.createCar(bc, contx, args);
+    await helper.enrichLedger(bc, contx, args);
 
     return Promise.resolve();
+
 };
 
 module.exports.run = function() {
     txIndex++;
-    let carNumber = 'Client' + contx.clientIdx + '_CAR' + txIndex.toString();
+    let sensorID = 'Client' + contx.clientIdx + '_NODE' + txIndex.toString();
+    let newSensorValue = values[Math.floor(Math.random() * values.length)];
 
     let args = {
-        chaincodeFunction: 'queryCar',
-        chaincodeArguments: [carNumber]
+        chaincodeFunction: 'updateReading',
+        chaincodeArguments: [sensorID, newSensorValue]
     };
 
-    if (txIndex === limitIndex) {
+    if (txIndex === clientArgs.assets) {
         txIndex = 0;
     }
 
-    return bc.bcObj.querySmartContract(contx, 'fabcar', 'v1', args, 30);
+    return bc.invokeSmartContract(contx, 'fabcar', 'v1', args, 60);
 };
 
-module.exports.end = function() {
+module.exports.end = async function() {
     return Promise.resolve();
 };
