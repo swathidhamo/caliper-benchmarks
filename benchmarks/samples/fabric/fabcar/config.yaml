@@ -25,6 +25,24 @@ test:
       opts:
         unfinished_per_client: 5
     callback: benchmarks/samples/fabric/fabcar/addReading.js
+  - label: Query all entries.
+    txDuration: 30
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 5
+    arguments:
+      assets: 10 
+    callback: benchmarks/samples/fabric/fabcar/queryAllReadings.js
+  - label: Query an entry.
+    txDuration: 30
+    rateControl:
+      type: fixed-backlog
+      opts:
+        unfinished_per_client: 5
+    arguments:
+      assets: 10 
+    callback: benchmarks/samples/fabric/fabcar/queryReading.js
 monitor:
   type:
   - docker

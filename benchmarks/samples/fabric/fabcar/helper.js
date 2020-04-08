@@ -14,30 +14,26 @@
 
 'use strict';
 
-let colors = ['blue', 'red', 'green', 'yellow', 'black', 'purple', 'white', 'violet', 'indigo', 'brown'];
-let makes = ['Toyota', 'Ford', 'Hyundai', 'Volkswagen', 'Tesla', 'Peugeot', 'Chery', 'Fiat', 'Tata', 'Holden'];
-let models = ['Prius', 'Mustang', 'Tucson', 'Passat', 'S', '205', 'S22L', 'Punto', 'Nano', 'Barina'];
-let owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
-
-let carNumber;
+let models = ['pH','Humidity','Temperature','Visual'];
+let timestamps = ['12/02/2020 15:05', '01/02/2020 15:05','12/12/2018 11:05','12/02/2019 15:05','07/02/2018 15:05','09/09/2020 15:05','11/02/2019 15:05'];
+let values = ['0.5','6.8','2,7','1.22','2.34','5.6','0.12','0.112'];
+let sensorID;
 let txIndex = 0;
 
-module.exports.createCar = async function (bc, contx, args, color, make, model, owner) {
+module.exports.enrichLedger = async function (bc, contx, args, color, make, model, owner) {
 
     while (txIndex < args.assets) {
         txIndex++;
-        carNumber = 'Client' + contx.clientIdx + '_CAR' + txIndex.toString();
-        color = colors[Math.floor(Math.random() * colors.length)];
-        make = makes[Math.floor(Math.random() * makes.length)];
-        model = models[Math.floor(Math.random() * models.length)];
-        owner = owners[Math.floor(Math.random() * owners.length)];
+        let sensorID = 'Client' + contx.clientIdx + '_NODE' + txIndex.toString();
+        let sensorModel = models[Math.floor(Math.random() * models.length)];
+        let sensorTimestamp= timestamps[Math.floor(Math.random() * timestamps.length)];
+        let sensorValue = values[Math.floor(Math.random() * values.length)];
+        let args = {
+            chaincodeFunction: "addReading",
+            chaincodeArguments: [sensorID, sensorModel, sensorTimestamp, sensorValue]
+        };       
     
-        let myArgs = {
-            chaincodeFunction: 'createCar',
-            chaincodeArguments: [carNumber, make, model, color, owner]
-        };
-    
-        await bc.invokeSmartContract(contx, 'fabcar', 'v1', myArgs, 30);
+        await bc.invokeSmartContract(contx, 'fabcar', 'v1', args, 30);
     }
 
 };
