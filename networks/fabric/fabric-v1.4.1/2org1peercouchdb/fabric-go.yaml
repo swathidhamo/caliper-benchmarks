@@ -69,23 +69,11 @@ channels:
         eventSource: true
 
     chaincodes:
-    - id: marbles
-      version: v0
+    - id: fabcar
+      version: v1
       language: golang
-      path: fabric/samples/marbles/go
-      metadataPath: src/fabric/samples/marbles/go/metadata
-    - id: drm
-      version: v0
-      language: golang
-      path: fabric/scenario/drm/go
-    - id: simple
-      version: v0
-      language: golang
-      path: fabric/scenario/simple/go
-    - id: smallbank
-      version: v0
-      language: golang
-      path: fabric/scenario/smallbank/go
+      path: fabric/samples/fabcar/go
+      
 
 organizations:
   Org1:
