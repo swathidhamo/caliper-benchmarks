@@ -33,8 +33,8 @@ module.exports.init = async function(blockchain, context, args) {
 
 module.exports.run = function() {
     txIndex++;
-    let sensorID = 'Client' + contx.clientIdx + '_NODE' + txIndex.toString();
-
+    //let sensorID = 'Client' + contx.clientIdx + '_NODE' + txIndex.toString();
+    let sensorID  = txIndex.toString();
     let args = {
         chaincodeFunction: 'getReadingForID',
         chaincodeArguments: [sensorID]

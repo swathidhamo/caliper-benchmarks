@@ -35,8 +35,7 @@ module.exports.init = async function (blockchain, context, args) {
 module.exports.run = function () {
 
     let args = {
-        chaincodeFunction: 'getReading',
-        chaincodeArguments: [startingKey, endingKey]     
+        chaincodeFunction: 'getReading'
     };
 
     return bc.bcObj.querySmartContract(contx, 'fabcar', 'v1', args, 60)

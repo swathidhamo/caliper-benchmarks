@@ -14,25 +14,32 @@
 
 'use strict';
 
-let models = ['pH','Humidity','Temperature','Visual'];
-let timestamps = ['12/02/2020 15:05', '01/02/2020 15:05','12/12/2018 11:05','12/02/2019 15:05','07/02/2018 15:05','09/09/2020 15:05','11/02/2019 15:05'];
-let values = ['0.5','6.8','2,7','1.22','2.34','5.6','0.12','0.112'];
-let sensorID;
+
+
 let txIndex = 0;
+let pHValues = ['3','4','5','6','7','9','9','10'];
+let coordinateValues = ['1.0','2.6','3.4','4.5','5.7','6.9','7.1'];
+let tempValues = ['10','20','30','40'];
+let timestampValues = ['12/02/2020 15:05', '01/02/2020 15:05','12/12/2018 11:05','12/02/2019 15:05','07/02/2018 15:05','09/09/2020 15:05','11/02/2019 15:05'];
+let bc, contx;
 
 module.exports.enrichLedger = async function (bc, contx, args, color, make, model, owner) {
 
     while (txIndex < args.assets) {
         txIndex++;
-        let sensorID = 'Client' + contx.clientIdx + '_NODE' + txIndex.toString();
-        let sensorModel = models[Math.floor(Math.random() * models.length)];
-        let sensorTimestamp= timestamps[Math.floor(Math.random() * timestamps.length)];
-        let sensorValue = values[Math.floor(Math.random() * values.length)];
-        let args = {
-            chaincodeFunction: "addReading",
-            chaincodeArguments: [sensorID, sensorModel, sensorTimestamp, sensorValue]
-        };       
-    
+      //  let sensorID = 'Client' + contx.clientIdx + '_NODE' + txIndex.toString();
+     let sensorID = txIndex.toString();
+     let sensorpHValue = pHValues[Math.floor(Math.random() * pHValues.length)];
+     let sensorLatValue = coordinateValues[Math.floor(Math.random() * coordinateValues.length)];
+     let sensorLngValue = coordinateValues[Math.floor(Math.random() * coordinateValues.length)];
+     let sensortempValue = tempValues[Math.floor(Math.random() * tempValues.length)];
+     let sensortimestampValue = timestampValues[Math.floor(Math.random() * timestampValues.length)];
+  
+     let args = {
+        chaincodeFunction: "addReading",
+        chaincodeArguments: [sensorID, sensorLatValue,sensorLngValue,sensorpHValue,sensortempValue,sensortimestampValue]
+      };
+   
         await bc.invokeSmartContract(contx, 'fabcar', 'v1', args, 30);
     }
 

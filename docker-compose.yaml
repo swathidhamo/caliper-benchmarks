@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+    caliper:
+        container_name: caliper
+        image: hyperledger/caliper:0.3.0
+        command: launch master
+        environment:
+        - CALIPER_BIND_SUT=fabric:1.4.0
+        - CALIPER_BENCHCONFIG=benchmarks/samples/fabric/fabcar/config.yaml
+        - CALIPER_NETWORKCONFIG=networks/fabric/fabric-v1.4.1/2org1peergoleveldb/fabric-go.yaml
+        volumes:
+        - ~/caliper-test-folder/working/caliper-benchmarks:/hyperledger/caliper/workspace
