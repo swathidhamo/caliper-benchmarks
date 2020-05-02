@@ -46,11 +46,7 @@ test:
 monitor:
   type:
   - docker
-  docker:  
-    containers:
+  docker:
+    name:
     - all
-    charting:
-    bar:
-      metrics: [Memory(avg), CPU%(avg)]
-    polar:
-      metrics: [all]
+  interval: 1
